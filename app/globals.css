@@ -7,13 +7,8 @@
 @custom-variant tab (@media (min-width: 810px));
 @custom-variant desk (@media (min-width: 1200px));
 
-.about-shard {
-  transform: translate3d(
-    calc(var(--tx, 0px) * var(--p1, 0)),
-    calc(var(--ty, 0px) * var(--p1, 0)),
-    0
-  ) rotate(calc(var(--rot, 0deg) * var(--p1, 0)));
-}
+
+
 
 @theme inline {
   --color-background: var(--background);

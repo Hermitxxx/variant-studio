@@ -7,6 +7,8 @@ import { AboutSection } from "@/components/AboutSection";
 import HorizontalScroll from "@/components/HorizontalScroll";
 import LatestProducts from "@/components/LatestProducts";
 
+import { CinematicFooter } from "@/components/Footer";
+
 export default function Home() {
   const [preloaderKey, setPreloaderKey] = useState(0);
   const [showPreloader, setShowPreloader] = useState(true);
@@ -50,6 +52,9 @@ export default function Home() {
 
       {/* 5. Latest Products Section with 3D Cards & Carousel Navigator */}
       <LatestProducts />
+
+      {/* 6. Cinematic Footer */}
+      <CinematicFooter />
     </main>
   );
 }
