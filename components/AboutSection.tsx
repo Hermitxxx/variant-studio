@@ -1,14 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useLenis } from "lenis/react";
+import { ShadeGradient } from "@/components/ShadeGradient";
 
 export interface AboutShard {
   src: string;
   corner: string;
-  vars: string;
   tag: string;
   title: string;
+  tx: number;
+  ty: number;
+  rot: number;
 }
 
 export interface AboutContent {
@@ -17,35 +21,42 @@ export interface AboutContent {
   shards: readonly AboutShard[];
 }
 
-/* Offsets and tilts per-breakpoint. Rotation is consistent while travel distance and box size scale. */
 const SHARDS: readonly AboutShard[] = [
   {
     src: "/products/1.jpg",
     tag: "CAPSULE 01",
     title: "Shadow Silhouette Hoodie",
-    corner: "top-4 left-4 sm:top-8 sm:left-8 tab:top-10 tab:left-10 desk:top-14 desk:left-14",
-    vars: "[--rot:14deg] [--tx:35px] [--ty:140px] tab:[--tx:80px] tab:[--ty:160px] desk:[--tx:220px] desk:[--ty:180px]",
+    corner: "top-4 left-4 sm:top-8 sm:left-8 md:top-10 md:left-10 lg:top-14 lg:left-14",
+    tx: 45,
+    ty: 110,
+    rot: 14,
   },
   {
     src: "/products/2.jpg",
     tag: "CAPSULE 02",
     title: "Manga Heavyweight Tee",
-    corner: "top-4 right-4 sm:top-8 sm:right-8 tab:top-10 tab:right-10 desk:top-14 desk:right-14",
-    vars: "[--rot:-18deg] [--tx:-35px] [--ty:140px] tab:[--tx:-80px] tab:[--ty:160px] desk:[--tx:-220px] desk:[--ty:180px]",
+    corner: "top-4 right-4 sm:top-8 sm:right-8 md:top-10 md:right-10 lg:top-14 lg:right-14",
+    tx: -45,
+    ty: 110,
+    rot: -16,
   },
   {
     src: "/products/3.jpg",
     tag: "CAPSULE 03",
     title: "Cursed Realm Windbreaker",
-    corner: "bottom-4 left-4 sm:bottom-8 sm:left-8 tab:bottom-10 tab:left-10 desk:bottom-14 desk:left-14",
-    vars: "[--rot:-16deg] [--tx:35px] [--ty:-140px] tab:[--tx:80px] tab:[--ty:-160px] desk:[--tx:220px] desk:[--ty:-180px]",
+    corner: "bottom-4 left-4 sm:bottom-8 sm:left-8 md:bottom-10 md:left-10 lg:bottom-14 lg:left-14",
+    tx: 45,
+    ty: -110,
+    rot: -14,
   },
   {
     src: "/products/4.jpg",
     tag: "CAPSULE 04",
     title: "Bespoke Heavyweight Pant",
-    corner: "bottom-4 right-4 sm:bottom-8 sm:right-8 tab:bottom-10 tab:right-10 desk:bottom-14 desk:right-14",
-    vars: "[--rot:16deg] [--tx:-35px] [--ty:-140px] tab:[--tx:-80px] tab:[--ty:-160px] desk:[--tx:-220px] desk:[--ty:-180px]",
+    corner: "bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-10 md:right-10 lg:bottom-14 lg:right-14",
+    tx: -45,
+    ty: -110,
+    rot: 16,
   },
 ];
 
@@ -61,30 +72,56 @@ const clamp = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
 export function AboutSection() {
   const ref = useRef<HTMLElement>(null);
 
-  useEffect(() => {
+  const update = useCallback(() => {
     const el = ref.current;
     if (!el) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.style.setProperty("--p1", "1");
-      el.style.setProperty("--p2", "1");
-      return;
-    }
+    const { top, height } = el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const maxScroll = height - vh;
+    if (maxScroll <= 0) return;
 
+    // Pin progress: 0 when entering viewport, 1 when section finishes
+    const p1 = clamp(-top / maxScroll);
+    const p2 = clamp((-top - (height - 2 * vh)) / vh);
+
+    el.style.setProperty("--p1", String(p1));
+    el.style.setProperty("--p2", String(p2));
+
+    // Responsive travel factor: smoothly scales from mobile to 4K
+    const isMobile = window.innerWidth < 640;
+    const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
+    const factor = isMobile ? 0.85 : isTablet ? 1.4 : 2.2;
+
+    const shards = el.querySelectorAll<HTMLElement>(".about-shard");
+    shards.forEach((shard, idx) => {
+      const item = SHARDS[idx];
+      if (!item) return;
+      const x = item.tx * factor * p1;
+      const y = item.ty * factor * p1;
+      const r = item.rot * p1;
+      shard.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${r}deg)`;
+    });
+
+    const headline = el.querySelector<HTMLElement>(".about-headline");
+    if (headline) {
+      headline.style.transform = `translate3d(0, ${-p2 * 35}px, 0)`;
+      headline.style.opacity = String(1 - p2 * 0.35);
+    }
+  }, []);
+
+  // Synchronize directly with Lenis scroll engine (crucial for mobile touch)
+  useLenis(update);
+
+  useEffect(() => {
     let frame = 0;
-    const update = () => {
-      frame = 0;
-      const { top, height } = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // `-top` is `scrollY - sectionTop`; the pin lasts `height - vh`.
-      const p1 = clamp(-top / (height - vh));
-      // The headline is driven by the trailing 100vh runway, so it starts a third of the way in.
-      const p2 = clamp((-top - (height - 2 * vh)) / vh);
-      el.style.setProperty("--p1", String(p1));
-      el.style.setProperty("--p2", String(p2));
-    };
     const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+      if (!frame) {
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          update();
+        });
+      }
     };
 
     update();
@@ -95,27 +132,26 @@ export function AboutSection() {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
-  }, []);
+  }, [update]);
 
   return (
     <section
       ref={ref}
-      className="relative flex h-min w-full flex-none flex-col items-center justify-center overflow-clip bg-[#050505] text-white selection:bg-red-500 selection:text-white"
+      className="relative flex h-min w-full flex-none flex-col items-center justify-center bg-transparent text-white selection:bg-red-500 selection:text-white"
     >
-      {/* Subtle Crimson Radial Ambient Glow Aura (Project Color Accent, No Noise) */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
-        <div
-          className="w-[500px] sm:w-[750px] md:w-[950px] h-[500px] sm:h-[750px] md:h-[950px] rounded-full blur-[120px] opacity-25"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(220,38,38,0.4) 0%, rgba(185,28,28,0.12) 45%, transparent 75%)",
-          }}
-        />
-      </div>
+      {/* Artisanal Crimson / Smoked Ruby Shader Gradient Background */}
+      <ShadeGradient
+        color1="#ff1b6b"
+        color2="#991b1b"
+        color3="#31103f"
+        uSpeed={0.28}
+        brightness={1.0}
+        overlayOpacity="bg-black/35"
+      />
 
-      {/* Sticky stage: 100vh pinned for the section's remaining 150vh runway */}
-      <div className="sticky top-0 z-[2] flex h-screen w-full max-w-[1400px] flex-none flex-col items-center justify-center px-5 sm:px-8 md:px-12 overflow-hidden">
-        {/* Center Editorial Manifesto (Refined & Restrained Heading) */}
+      {/* Sticky stage: 100dvh pinned for the section's remaining 150vh runway */}
+      <div className="sticky top-0 z-[2] flex h-[100dvh] w-full max-w-[1400px] flex-none flex-col items-center justify-center px-5 sm:px-8 md:px-12">
+        {/* Center Editorial Manifesto */}
         <div className="about-headline relative z-10 max-w-2xl mx-auto text-center flex flex-col items-center justify-center px-4 will-change-transform">
           {/* Chapter Indicator */}
           <span className="text-[11px] font-mono tracking-[0.25em] text-white/40 uppercase font-medium mb-3">
@@ -133,7 +169,7 @@ export function AboutSection() {
           </h2>
 
           {/* Restrained Description */}
-          <p className="font-sans text-[13px] sm:text-[14px] text-white/65 font-normal tracking-[-0.01em] max-w-md mx-auto leading-relaxed mb-6">
+          <p className="font-sans text-[13px] sm:text-[14px] text-white/70 font-normal tracking-[-0.01em] max-w-md mx-auto leading-relaxed mb-6">
             {CONTENT.subheadline}
           </p>
 
@@ -147,11 +183,11 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* 4 Interactive Product Shards/Cards floating inward with --p1 scroll progress */}
+        {/* 4 Interactive Product Shards/Cards floating inward with scroll progress */}
         {CONTENT.shards.map((shard) => (
           <div
             key={shard.src}
-            className={`about-shard absolute z-[3] aspect-[3/4] h-auto w-[95px] sm:w-[135px] tab:w-[170px] desk:w-[210px] flex-none will-change-transform ${shard.corner} ${shard.vars}`}
+            className={`about-shard absolute z-[3] aspect-[3/4] h-auto w-[90px] sm:w-[130px] md:w-[170px] lg:w-[210px] flex-none will-change-transform ${shard.corner}`}
           >
             <div className="group relative w-full h-full rounded-sm overflow-hidden bg-[#0a0a0a] border border-white/15 hover:border-red-500/60 transition-all duration-300 shadow-[0_15px_35px_rgba(0,0,0,0.85)] cursor-pointer">
               {/* Product Image */}
@@ -187,8 +223,8 @@ export function AboutSection() {
         ))}
       </div>
 
-      {/* Scroll runway (150vh) drives the pin progress without rendering extraneous elements */}
-      <div className="h-[150vh] w-full flex-none overflow-clip" aria-hidden />
+      {/* Scroll runway (150vh) drives the pin progress */}
+      <div className="h-[150vh] w-full flex-none" aria-hidden />
     </section>
   );
 }

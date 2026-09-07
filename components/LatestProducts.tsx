@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card';
 import { CarouselNavigator } from '@/components/carousel-navigator';
+import { ShadeGradient } from '@/components/ShadeGradient';
+import { RevealWrapper } from '@/components/RevealWrapper';
 
 interface Product {
   id: string;
@@ -137,8 +139,18 @@ export default function LatestProducts() {
   const currentProducts = PRODUCTS.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
 
   return (
-    <section className="relative w-full bg-[#050505] py-24 px-6 sm:px-12 lg:px-20 text-white border-t border-white/10">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative w-full bg-[#050505] py-24 px-6 sm:px-12 lg:px-20 text-white border-t border-white/10 overflow-hidden">
+      {/* Neo-Tokyo Electric Cyan & Indigo Shader Gradient Background (No Noise) */}
+      <ShadeGradient
+        color1="#06b6d4"
+        color2="#6366f1"
+        color3="#0f172a"
+        uSpeed={0.22}
+        brightness={0.7}
+        overlayOpacity="bg-[#050505]/80"
+      />
+
+      <RevealWrapper className="max-w-7xl mx-auto" yOffset={50} duration={0.9} blur>
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
@@ -288,7 +300,7 @@ export default function LatestProducts() {
             Displaying {currentProducts.length} of {PRODUCTS.length} Available Pieces
           </div>
         </div>
-      </div>
+      </RevealWrapper>
     </section>
   );
 }
