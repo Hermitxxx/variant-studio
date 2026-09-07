@@ -5,6 +5,7 @@ import { Preloader } from "@/components/Preloader";
 import { HeroSection } from "@/components/HeroSection";
 import { AboutSection } from "@/components/AboutSection";
 import HorizontalScroll from "@/components/HorizontalScroll";
+import LatestProducts from "@/components/LatestProducts";
 
 export default function Home() {
   const [preloaderKey, setPreloaderKey] = useState(0);
@@ -46,6 +47,9 @@ export default function Home() {
 
       {/* 4. Horizontal Scroll Runway Section */}
       <HorizontalScroll />
+
+      {/* 5. Latest Products Section with 3D Cards & Carousel Navigator */}
+      <LatestProducts />
     </main>
   );
 }
