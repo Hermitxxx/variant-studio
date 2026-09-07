@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
 import { useLenis } from "lenis/react";
-import { ShadeGradient } from "@/components/ShadeGradient";
+
 
 export interface AboutShard {
   src: string;
@@ -137,17 +137,17 @@ export function AboutSection() {
   return (
     <section
       ref={ref}
-      className="relative flex h-min w-full flex-none flex-col items-center justify-center bg-transparent text-white selection:bg-red-500 selection:text-white"
+      className="relative flex h-min w-full flex-none flex-col items-center justify-center bg-[#050505] text-white selection:bg-red-500 selection:text-white"
     >
-      {/* Artisanal Crimson / Smoked Ruby Shader Gradient Background */}
-      <ShadeGradient
-        color1="#ff1b6b"
-        color2="#991b1b"
-        color3="#31103f"
-        uSpeed={0.28}
-        brightness={1.0}
-        overlayOpacity="bg-black/35"
+      {/* Scroll-driven radial red glow — fades in with --p1 progress */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0 transition-none"
+        style={{
+          background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(220,38,38,0.18) 0%, rgba(220,38,38,0.06) 40%, transparent 70%)',
+          opacity: 'var(--p1, 0)',
+        }}
       />
+
 
       {/* Sticky stage: 100dvh pinned for the section's remaining 150vh runway */}
       <div className="sticky top-0 z-[2] flex h-[100dvh] w-full max-w-[1400px] flex-none flex-col items-center justify-center px-5 sm:px-8 md:px-12">
@@ -189,14 +189,14 @@ export function AboutSection() {
             key={shard.src}
             className={`about-shard absolute z-[3] aspect-[3/4] h-auto w-[90px] sm:w-[130px] md:w-[170px] lg:w-[210px] flex-none will-change-transform ${shard.corner}`}
           >
-            <div className="group relative w-full h-full rounded-sm overflow-hidden bg-[#0a0a0a] border border-white/15 hover:border-red-500/60 transition-all duration-300 shadow-[0_15px_35px_rgba(0,0,0,0.85)] cursor-pointer">
+            <div className="relative w-full h-full rounded-sm overflow-hidden bg-[#0a0a0a] border border-white/15 shadow-[0_15px_35px_rgba(0,0,0,0.85)]">
               {/* Product Image */}
               <Image
                 src={shard.src}
                 alt={shard.title}
                 fill
                 sizes="(max-width: 640px) 100px, (max-width: 810px) 140px, (max-width: 1200px) 180px, 220px"
-                className="object-cover object-center grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                className="object-cover object-center"
               />
 
               {/* Subtle Dark Vignette on Image */}
@@ -211,7 +211,7 @@ export function AboutSection() {
 
               {/* Bottom Title Label */}
               <div className="absolute bottom-2 left-2 right-2 z-10 flex flex-col">
-                <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-white tracking-tight leading-tight line-clamp-1 group-hover:text-red-400 transition-colors">
+                <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-white tracking-tight leading-tight line-clamp-1">
                   {shard.title}
                 </span>
                 <span className="text-[8px] sm:text-[8.5px] font-mono text-white/50 tracking-wider uppercase mt-0.5">
