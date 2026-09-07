@@ -46,7 +46,7 @@ const projects = [
     color: '#fd521a',
   },
 ];
-export default function index(): JSX.Element {
+export default function index() {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,

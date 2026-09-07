@@ -6,7 +6,7 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { InteractiveHeadline } from "./InteractiveHeadline";
 import { ServicesCard } from "./ServicesCard";
-// some cahnge
+
 interface HeroSectionProps {
   /** Controls when the hero animations trigger (synced with preloader) */
   isLoaded?: boolean;
