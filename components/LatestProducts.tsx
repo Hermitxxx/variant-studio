@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card';
-import { CarouselNavigator } from '@/components/carousel-navigator';
+import { CarouselNavigator } from '@/components/CarouselNavigator';
 
 import { RevealWrapper } from '@/components/RevealWrapper';
 
