@@ -146,7 +146,7 @@ export default function LatestProducts() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
-            <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-neutral-400 mb-3">
+            <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-white/60 mb-3">
               <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
               <span>Catalog Edition // 2026</span>
               <span className="text-white/20">|</span>
@@ -158,11 +158,11 @@ export default function LatestProducts() {
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <p className="max-w-md text-sm font-sans text-neutral-400 font-light leading-relaxed">
+            <p className="max-w-md text-sm font-sans text-white/70 font-light leading-relaxed">
               Explore our current roster of heavyweight silhouettes. Hover over each piece to examine
               the depth and structural architecture.
             </p>
-            <div className="hidden lg:flex items-center gap-2 font-mono text-xs text-neutral-400 border border-white/10 rounded-full px-4 py-1.5 bg-white/5 backdrop-blur-sm self-start sm:self-auto">
+            <div className="hidden lg:flex items-center gap-2 font-mono text-xs text-white/50 border border-white/10 rounded-full px-4 py-1.5 bg-white/5 backdrop-blur-sm self-start sm:self-auto">
               <span>PAGE {currentPage + 1} / {totalPages}</span>
             </div>
           </div>
@@ -175,7 +175,7 @@ export default function LatestProducts() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: 'easeInOut' }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"
           >
             {currentProducts.map((product) => (
@@ -192,16 +192,16 @@ export default function LatestProducts() {
                     <div className="flex items-center justify-between font-mono text-xs mb-3">
                       <CardItem
                         translateZ={30}
-                        className="flex items-center gap-2 text-neutral-400"
+                        className="flex items-center gap-2 text-white/60"
                       >
                         <span className="font-bold text-white">[{product.number}]</span>
-                        <span className="text-neutral-500">//</span>
-                        <span className="tracking-wider">{product.tag}</span>
+                        <span className="text-white/30">//</span>
+                        <span className="tracking-wider text-white/50">{product.tag}</span>
                       </CardItem>
 
                       <CardItem translateZ={35}>
                         <span
-                          className={`rounded-full px-2.5 py-0.5 text-[10px] uppercase font-mono tracking-wider backdrop-blur-md border ${product.badgeColor}`}
+                          className={`rounded-full px-2.5 py-0.5 text-[10px] uppercase font-mono tracking-wider backdrop-blur-md border transition-colors duration-200 ${product.badgeColor}`}
                         >
                           {product.badge}
                         </span>
@@ -227,7 +227,7 @@ export default function LatestProducts() {
                     <CardItem
                       as="p"
                       translateZ={30}
-                      className="mt-2 text-xs sm:text-sm text-neutral-400 font-light line-clamp-2"
+                      className="mt-2 text-xs sm:text-sm text-white/60 font-light line-clamp-2"
                     >
                       {product.desc}
                     </CardItem>
@@ -266,7 +266,7 @@ export default function LatestProducts() {
                       translateZ={50}
                       as="button"
                       type="button"
-                      className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-mono uppercase tracking-wider text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-black cursor-pointer"
+                      className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-mono uppercase tracking-wider text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-black cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050505]"
                     >
                       <span>Acquire</span>
                       <span className="transition-transform duration-300 group-hover/btn:translate-x-1">
@@ -288,7 +288,7 @@ export default function LatestProducts() {
             onIndexChange={setCurrentPage}
             autoDelay={6000}
           />
-          <div className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mt-1">
+          <div className="font-mono text-[10px] text-white/40 uppercase tracking-widest mt-1">
             Displaying {currentProducts.length} of {PRODUCTS.length} Available Pieces
           </div>
         </div>

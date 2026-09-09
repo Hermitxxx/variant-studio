@@ -194,7 +194,7 @@ export default function HorizontalScroll() {
       <div className="relative w-full border-t border-white/10 bg-[#050505] px-6 py-16 sm:px-12 lg:px-20">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <div className="mb-3 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-neutral-400">
+            <div className="mb-3 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-white/60">
               <span className="h-2 w-2 animate-pulse rounded-full bg-white" />
               <span>Capsule Archive // Drop 01</span>
               <span className="text-white/20">|</span>
@@ -204,7 +204,7 @@ export default function HorizontalScroll() {
               Curated Silhouettes
             </h2>
           </div>
-          <p className="max-w-md font-sans text-sm font-light leading-relaxed text-neutral-400 sm:text-base">
+          <p className="max-w-md font-sans text-sm font-light leading-relaxed text-white/70 sm:text-base">
             Engineered in limited quantities. Scroll down to navigate horizontally across each
             heavyweight piece from the latest capsule collection.
           </p>
@@ -236,15 +236,15 @@ export default function HorizontalScroll() {
                 </span>
 
                 {/* Top Metadata Header per Card */}
-                <div className="absolute left-6 right-6 top-6 mx-auto flex max-w-6xl items-center justify-between font-mono text-xs text-neutral-400 sm:left-12 sm:right-12 sm:top-8">
+                <div className="absolute left-6 right-6 top-6 mx-auto flex max-w-6xl items-center justify-between font-mono text-xs text-white/60 sm:left-12 sm:right-12 sm:top-8">
                   <div className="flex items-center gap-3">
                     <span className="font-bold text-white">[{prod.number} / 05]</span>
-                    <span className="hidden text-neutral-500 sm:inline">//</span>
-                    <span className="hidden tracking-wider sm:inline">{prod.tag}</span>
+                    <span className="hidden text-white/30 sm:inline">//</span>
+                    <span className="hidden tracking-wider sm:inline text-white/50">{prod.tag}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span
-                      className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-wider backdrop-blur-md ${prod.colorScheme.badge}`}
+                      className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-wider backdrop-blur-md border transition-colors duration-200 ${prod.colorScheme.badge}`}
                     >
                       {prod.kanji} Atelier Cut
                     </span>
@@ -277,13 +277,13 @@ export default function HorizontalScroll() {
 
                   {/* Product Details Column */}
                   <div className="flex max-w-sm flex-col items-center text-center md:items-start md:text-left">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-neutral-400">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/50">
                       Release 2026 // Archive Spec
                     </span>
                     <h3 className="mt-2 text-xl font-bold uppercase tracking-tight text-white sm:text-3xl lg:text-4xl">
                       {prod.title}
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-neutral-400 sm:text-sm">
+                    <p className="mt-2 text-xs leading-relaxed text-white/60 sm:text-sm">
                       {prod.specs}
                     </p>
 
@@ -294,7 +294,7 @@ export default function HorizontalScroll() {
                       </span>
                       <button
                         type="button"
-                        className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium uppercase tracking-wider text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-black"
+                        className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium uppercase tracking-wider text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050505]"
                       >
                         <span>Acquire Piece</span>
                         <span className="transition-transform duration-300 group-hover/btn:translate-x-1">
@@ -306,7 +306,7 @@ export default function HorizontalScroll() {
                 </div>
 
                 {/* Bottom Technical Status Bar */}
-                <div className="absolute bottom-6 left-6 right-6 mx-auto flex max-w-6xl items-center justify-between font-mono text-[10px] text-neutral-500 sm:bottom-8 sm:left-12 sm:right-12">
+                <div className="absolute bottom-6 left-6 right-6 mx-auto flex max-w-6xl items-center justify-between font-mono text-[10px] text-white/40 sm:bottom-8 sm:left-12 sm:right-12">
                   <span>COORD // 35.6764° N, 139.6500° E</span>
                   <span className="hidden sm:inline">SWIPE / SCROLL TO DISCOVER</span>
                   <span>ARCHIVAL NO. {prod.id}</span>
@@ -321,8 +321,8 @@ export default function HorizontalScroll() {
               <span ref={indexRef} className="font-bold text-white">
                 [01 / 05]
               </span>
-              <span className="text-neutral-500">//</span>
-              <span className="text-neutral-400 uppercase text-[10px] tracking-widest hidden sm:inline">
+              <span className="text-white/30">//</span>
+              <span className="text-white/50 uppercase text-[10px] tracking-widest hidden sm:inline">
                 Runway Navigation
               </span>
             </div>

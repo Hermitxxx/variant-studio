@@ -103,10 +103,15 @@ function Card({
   const imageOpacity = useTransform(scrollYProgress, [0, 0.6], [0.6, 1]);
   const scale = useTransform(progress, range, [1, targetScale]);
 
+  // Per-card accent as CSS variable for consistent token usage
+  const accentVar = `--card-accent-${i}`;
+  const washVar = `--card-wash-${i}`;
+
   return (
     <div
       ref={container}
       className="h-screen flex items-center justify-center sticky top-0"
+      style={{ [accentVar]: accent, [washVar]: wash } as React.CSSProperties}
     >
       <motion.div
         style={{
@@ -123,7 +128,7 @@ function Card({
           className="absolute left-6 top-1/2 -translate-y-1/2 font-serif leading-none select-none pointer-events-none"
           style={{
             fontSize: "clamp(8rem, 22vw, 18rem)",
-            color: accent,
+            color: `var(${accentVar})`,
             opacity: 0.06,
             letterSpacing: "-0.06em",
             fontWeight: 700,
@@ -139,11 +144,11 @@ function Card({
           <div className="flex items-center gap-2">
             <span
               className="block w-5 h-px"
-              style={{ backgroundColor: accent, opacity: 0.7 }}
+              style={{ backgroundColor: `var(${accentVar})`, opacity: 0.7 }}
             />
             <span
               className="text-[10px] tracking-[0.22em] uppercase"
-              style={{ color: accent, opacity: 0.7 }}
+              style={{ color: `var(${accentVar})`, opacity: 0.7 }}
             >
               {capsule}
             </span>
@@ -152,7 +157,7 @@ function Card({
           {/* Middle: title — owns the space */}
           <div>
             <h2
-              className="text-white leading-[0.92] tracking-[-0.025em] mb-5"
+              className="text-white leading-[0.92] tracking-[-0.025em] mb-6"
               style={{
                 fontFamily: "var(--font-serif), 'Baskervville', Georgia, serif",
                 fontSize: "clamp(1.6rem, 3.2vw, 2.6rem)",
@@ -160,20 +165,20 @@ function Card({
             >
               {title}
             </h2>
-            <p className="text-white/55 text-sm leading-relaxed font-light max-w-[36ch]">
+            <p className="text-white/70 text-sm leading-relaxed font-light max-w-[36ch]">
               {description}
             </p>
           </div>
 
           {/* Bottom: spec pills — data, not costume mono */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-2">
             {specs.map((spec) => (
               <span
                 key={spec}
-                className="text-[10px] tracking-[0.14em] uppercase px-3 py-1 rounded-full border"
+                className="text-[10px] tracking-[0.14em] uppercase px-3 py-1 rounded-full border transition-colors duration-200"
                 style={{
-                  color: "rgba(255,255,255,0.35)",
-                  borderColor: "rgba(255,255,255,0.1)",
+                  color: "rgba(255,255,255,0.65)",
+                  borderColor: "rgba(255,255,255,0.15)",
                 }}
               >
                 {spec}
